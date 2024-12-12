@@ -86,7 +86,7 @@ class El_Pomar_GitHub_Updater {
                     'slug' => current(explode('/', $this->basename)),
                     'package' => $this->github_response->zipball_url,
                     'new_version' => $version,
-                    'tested' => $this->plugin['Tested up to']
+                    'tested' => isset($this->plugin['Tested up to']) ? $this->plugin['Tested up to'] : ''
                 );
 
                 $transient->response[$this->basename] = (object) $plugin;

@@ -2,14 +2,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.EP-offert-link').forEach(function(link) {
         link.addEventListener('click', function(event) {
             event.preventDefault();
-            let postId = this.getAttribute('data-post-id');
+            var postId = this.getAttribute('data-post-id');
             fetchContent(postId);
         });
     });
 
     document.addEventListener('click', function(event) {
         if (event.target && event.target.id === 'apply-button') {
-            let postId = event.target.getAttribute('data-post-id');
+            var postId = event.target.getAttribute('data-post-id');
             renderApplicationForm(postId);
         }
     });
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('application-form').addEventListener('submit', function(event) {
         event.preventDefault();
-        let formData = new FormData(this);
+        var formData = new FormData(this);
         formData.append('action', 'el_pomar_submit_application'); 
         formData.append('post_id', document.querySelector('.EP-offert-link.active').getAttribute('data-post-id'));
 
@@ -40,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.EP-accordion-header').forEach(function(header) {
         header.addEventListener('click', function() {
-            let content = this.nextElementSibling;
-            let toggleIcon = this.querySelector('.toggle-icon');
+            var content = this.nextElementSibling;
+            var toggleIcon = this.querySelector('.toggle-icon');
             if (content.style.display === 'block') {
                 content.style.display = 'none';
                 toggleIcon.src = el_pomar_core.plugin_url + 'assets/img/icons/plus.svg';

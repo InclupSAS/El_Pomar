@@ -33,7 +33,7 @@ function Pomar_core_admin_page() {
     </div>
     <script>
         function openTab(evt, tabName) {
-            let i, tabcontent, tablinks;
+            var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";

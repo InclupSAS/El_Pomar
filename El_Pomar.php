@@ -3,7 +3,7 @@
  * Plugin Name: El Pomar
  * Plugin URI: https://inclup.com/
  * Description: Gestiona tu catalogo de productos, publica ofertas laborales, crea nuevas recetas y muestra las noticias de tu empresa.
- * Version: 2.1.5
+ * Version: 2.3.2
  * Author: KerackDiaz
  * Author URI: https://github.com/KerackDiaz
  * License: GPLv2
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('EP_VERSION')) {
-    define('EP_VERSION', '2.1.5');
+    define('EP_VERSION', '2.3.2');
 }
 
 if (!defined('EP_FILE')) {
@@ -101,6 +101,7 @@ if (!class_exists(('El_Pomar_Core'))) {
             require_once EP_PLUGIN_DIR . 'includes/pages/settings/global_settings.php';
             require_once EP_PLUGIN_DIR . 'includes/functions/core/updater.php'; 
             require_once EP_PLUGIN_DIR . 'includes/functions/core/contact.php';
+            require_once EP_PLUGIN_DIR . 'includes/functions/core/product_redirect.php';
         }
 
         /**
@@ -109,7 +110,7 @@ if (!class_exists(('El_Pomar_Core'))) {
         public static function EP_activate() {
             update_option('EP_version', EP_VERSION);
             el_pomar_create_applicants_table();
-            el_pomar_create_form_table(); // Asegúrate de crear la tabla para el formulario de recetas
+            el_pomar_create_form_table();
         }
 
         /**
@@ -142,6 +143,7 @@ if (!class_exists(('El_Pomar_Core'))) {
 
         // Encolar los scripts para el frontend
         public function enqueue_frontend_scripts() {
+            wp_enqueue_script('el_pomar_products', plugin_dir_url(__FILE__) . 'assets/js/frontend/products-frontend.js', array('jquery'), null, true);
             wp_enqueue_script('el_pomar-floating-button', plugin_dir_url(__FILE__) . 'assets/js/frontend/floating-button.js', array('jquery'), null, true);
             wp_enqueue_script('el_pomar-offert-functions', plugin_dir_url(__FILE__) . 'assets/js/frontend/offert-functions.js', ['jquery'], '1.0.0', true);
             wp_localize_script('el_pomar-offert-functions', 'el_pomar_core', array(

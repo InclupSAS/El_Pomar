@@ -4,13 +4,13 @@ Plugin para WordPress que facilita la administración y visualización del catá
 
 ## Información
 
-- **Versión:** 2.1.5
+- **Versión:** 2.3.2
 - **Requiere WordPress:** 6.6.2 o superior
 - **Probado hasta:** 6.6.2  
 - **Requiere PHP:** 8.0
 - **Licencia:** GPLv2 o posterior
 - **URI de licencia:** https://www.gnu.org/licenses/gpl-2.0.html
-- **Etiquetas:** catálogo, productos, wordpress, ui
+- **Etiquetas:** catálogo, productos, wordpress, custom post type
 
 ## Desarrollado por
 
@@ -76,6 +76,13 @@ No, el plugin implementa su propio sistema de catálogo independiente.
 Sí, puedes insertar los shortcodes en cualquier constructor compatible.
 
 ## Registro de Cambios
+
+### 2.3.2
+- Corrección en la generación de los archivo csv de los leaks captados en los formularios de ofertas laborales y recetas.
+- Se crearon campos personalizados para agregar número telefonico y whatsapp para contacto directo.
+- Se rediseño la ui del portafolio de productos.
+- Se integró el seo con los productos de portafolio.
+- Se agregó un redireccionamiento inteligente en los post type de productos para poder integrar el seo.
 
 ### 2.1.5
 - Gestión de catálogo de productos por marcas y categorías.

@@ -63,9 +63,9 @@ function Pomar_core_catalog_settings_page() {
             document.querySelectorAll('.delete-icon').forEach(function(button) {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
-                    let iconName = this.getAttribute('data-icon');
-                    let iconType = this.getAttribute('data-type');
-                    let data = new FormData();
+                    var iconName = this.getAttribute('data-icon');
+                    var iconType = this.getAttribute('data-type');
+                    var data = new FormData();
                     data.append('action', 'delete_catalog_icon');
                     data.append('icon_name', iconName);
                     data.append('icon_type', iconType);
@@ -88,7 +88,7 @@ function Pomar_core_catalog_settings_page() {
             // Manejar la subida de iconos
             document.getElementById('upload-icon-form').addEventListener('submit', function(event) {
                 event.preventDefault();
-                let formData = new FormData(this);
+                var formData = new FormData(this);
                 formData.append('action', 'upload_catalog_icon');
 
                 fetch(ajaxurl, {

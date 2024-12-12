@@ -35,7 +35,7 @@ function Pomar_core_settings_page() {
     </div>
     <script>
         function openSettingsTab(evt, tabName) {
-            let i, tabcontent, tablinks;
+            var i, tabcontent, tablinks;
             tabcontent = document.getElementsByClassName("settings-tab-content");
             for (i = 0; i < tabcontent.length; i++) {
                 tabcontent[i].style.display = "none";
@@ -49,9 +49,9 @@ function Pomar_core_settings_page() {
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            let hash = window.location.hash.substring(1);
+            var hash = window.location.hash.substring(1);
             if (hash) {
-                let tab = document.querySelector('a[href="#' + hash + '"]');
+                var tab = document.querySelector('a[href="#' + hash + '"]');
                 if (tab) {
                     tab.click();
                 }

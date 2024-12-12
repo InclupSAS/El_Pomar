@@ -41,8 +41,8 @@ function el_pomar_jobs_settings_page() {
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            let useAdminEmailCheckbox = document.querySelector('input[name="el_pomar_use_admin_email"]');
-            let customEmailContainer = document.getElementById('custom-email-container');
+            var useAdminEmailCheckbox = document.querySelector('input[name="el_pomar_use_admin_email"]');
+            var customEmailContainer = document.getElementById('custom-email-container');
 
             function toggleCustomEmailContainer() {
                 if (useAdminEmailCheckbox.checked) {
@@ -58,23 +58,23 @@ function el_pomar_jobs_settings_page() {
             function insertAtCursor(myField, myValue) {
                 if (document.selection) {
                     myField.focus();
-                    let sel = document.selection.createRange();
+                    var sel = document.selection.createRange();
                     sel.text = myValue;
                 } else if (myField.selectionStart || myField.selectionStart === 0) {
-                    let startPos = myField.selectionStart;
-                    let endPos = myField.selectionEnd;
+                    var startPos = myField.selectionStart;
+                    var endPos = myField.selectionEnd;
                     myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
                 } else {
                     myField.value += myValue;
                 }
             }
 
-            let emailBodyField = document.querySelector('textarea[name="el_pomar_email_body"]');
-            let variableButtons = document.querySelectorAll('.insert-variable-button');
+            var emailBodyField = document.querySelector('textarea[name="el_pomar_email_body"]');
+            var variableButtons = document.querySelectorAll('.insert-variable-button');
 
             variableButtons.forEach(function(button) {
                 button.addEventListener('click', function() {
-                    let variable = this.getAttribute('data-variable');
+                    var variable = this.getAttribute('data-variable');
                     insertAtCursor(emailBodyField, variable);
                 });
             });
@@ -83,8 +83,8 @@ function el_pomar_jobs_settings_page() {
             document.querySelectorAll('.delete-icon').forEach(function(button) {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
-                    let iconName = this.getAttribute('data-icon');
-                    let data = new FormData();
+                    var iconName = this.getAttribute('data-icon');
+                    var data = new FormData();
                     data.append('action', 'delete_icon');
                     data.append('icon_name', iconName);
 
@@ -106,7 +106,7 @@ function el_pomar_jobs_settings_page() {
             // Manejar la subida de iconos
             document.getElementById('upload-icon-form').addEventListener('submit', function(event) {
                 event.preventDefault();
-                let formData = new FormData(this);
+                var formData = new FormData(this);
                 formData.append('action', 'upload_icon');
 
                 fetch(ajaxurl, {

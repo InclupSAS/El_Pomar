@@ -45,7 +45,7 @@ function el_pomar_register_catalog_post_types() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
-        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'supports'           => array('title', 'editor', 'excerpt'),
     );
 
     register_post_type('el_pomar', $args_el_pomar);
@@ -89,7 +89,7 @@ function el_pomar_register_catalog_post_types() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
-        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'supports'           => array('title', 'editor', 'excerpt'),
     );
 
     register_post_type('mulai', $args_mulai);
@@ -133,7 +133,7 @@ function el_pomar_register_catalog_post_types() {
         'has_archive'        => true,
         'hierarchical'       => false,
         'menu_position'      => null,
-        'supports'           => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'supports'           => array('title', 'editor', 'excerpt'),
     );
 
     register_post_type('levelma', $args_levelma);
@@ -251,6 +251,7 @@ function Pomar_core_add_meta_boxes() {
 add_action('add_meta_boxes', 'Pomar_core_add_meta_boxes');
 
 
+
 function Pomar_core_render_meta_box($post) {
     $benefits = get_post_meta($post->ID, '_benefits', true);
     $presentaciones = get_post_meta($post->ID, '_presentaciones', true);
@@ -297,8 +298,8 @@ function Pomar_core_render_meta_box($post) {
             ?>
             <div class="presentacion-item">
                 <div class="presentation-upload">
-                    <img src="<?php echo esc_url($presentacion['image']); ?>" alt="Presentación" class="presentacion-image-preview" style="width: 50px; height: 50px; margin-right: 10px; display: <?php echo esc_url($presentacion['image']) ? 'inline' : 'none'; ?>;" />
-                    <input type="file" name="presentaciones[image][]" accept="image/*" onchange="updateImagePreview(this)" style="display: none;" />
+                    <img src="<?php echo esc_url($presentacion['image']); ?>" alt="Presentación" class="presentacion-image-preview" style="width: 50px; height: 50px; margin-right: 10px; display: <?php echo !empty($presentacion['image']) ? 'inline' : 'none'; ?>;" />
+                    <input type="hidden" name="presentaciones[image][]" value="<?php echo esc_url($presentacion['image']); ?>" />
                     <button type="button" class="upload-image-button">Subir Imagen</button>
                 </div>
                 <input type="text" name="presentaciones[text][]" value="<?php echo esc_attr($presentacion['text']); ?>" style="width: 60%;" placeholder="Descripción" />
@@ -311,7 +312,7 @@ function Pomar_core_render_meta_box($post) {
     </div>
     <button type="button" id="add-presentacion">Agregar Presentación</button>
 
-        <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             function updateIconPreview(selectElement) {
                 let icon = selectElement.value;
@@ -346,7 +347,7 @@ function Pomar_core_render_meta_box($post) {
                 `;
                 wrapper.appendChild(newBenefit);
 
-                let selectElement = newBenefit.querySelector('.benefit-icon-select');
+                var selectElement = newBenefit.querySelector('.benefit-icon-select');
                 selectElement.addEventListener('change', function() {
                     updateIconPreview(selectElement);
                 });
@@ -365,7 +366,7 @@ function Pomar_core_render_meta_box($post) {
                 newPresentacion.innerHTML = `
                     <div class="presentation-upload">
                         <img src="" alt="Presentación" class="presentacion-image-preview" style="width: 50px; height: 50px; margin-right: 10px; display: none;" />
-                        <input type="file" name="presentaciones[image][]" accept="image/*" onchange="updateImagePreview(this)" style="display: none;" />
+                        <input type="hidden" name="presentaciones[image][]" value="" />
                         <button type="button" class="upload-image-button">Subir Imagen</button>
                     </div>
                     <input type="text" name="presentaciones[text][]" value="" style="width: 75%;" placeholder="Descripción" />
@@ -379,7 +380,19 @@ function Pomar_core_render_meta_box($post) {
                     e.target.parentElement.remove();
                 } else if (e.target.classList.contains('upload-image-button')) {
                     let fileInput = e.target.previousElementSibling;
-                    fileInput.click();
+                    let imgPreview = fileInput.previousElementSibling;
+                    let mediaUploader = wp.media({
+                        title: 'Seleccionar Imagen',
+                        button: {
+                            text: 'Usar esta imagen'
+                        },
+                        multiple: false
+                    }).on('select', function() {
+                        let attachment = mediaUploader.state().get('selection').first().toJSON();
+                        fileInput.value = attachment.url;
+                        imgPreview.src = attachment.url;
+                        imgPreview.style.display = 'inline';
+                    }).open();
                 }
             });
         });
@@ -420,14 +433,11 @@ function Pomar_core_save_post($post_id) {
     if (isset($_POST['presentaciones'])) {
         $presentaciones = array();
         foreach ($_POST['presentaciones']['text'] as $index => $text) {
-            $image = $_FILES['presentaciones']['name']['image'][$index];
-            $upload = wp_upload_bits($image, null, file_get_contents($_FILES['presentaciones']['tmp_name']['image'][$index]));
-            if (!$upload['error']) {
-                $presentaciones[] = array(
-                    'image' => $upload['url'],
-                    'text' => sanitize_text_field($text)
-                );
-            }
+            $image = isset($_POST['presentaciones']['image'][$index]) ? $_POST['presentaciones']['image'][$index] : '';
+            $presentaciones[] = array(
+                'image' => esc_url_raw($image),
+                'text' => sanitize_text_field($text)
+            );
         }
         update_post_meta($post_id, '_presentaciones', $presentaciones);
     }

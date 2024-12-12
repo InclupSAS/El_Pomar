@@ -6,8 +6,8 @@ jQuery(document).ready(function($) {
 
     $('.upload-thumbnail-button').on('click', function(e) {
         e.preventDefault();
-        let item_id = $(this).data('item-id');
-        let frame = wp.media({
+        var item_id = $(this).data('item-id');
+        var frame = wp.media({
             title: 'Seleccionar Imagen',
             button: {
                 text: 'Usar esta imagen'
@@ -16,7 +16,7 @@ jQuery(document).ready(function($) {
         });
 
         frame.on('select', function() {
-            let attachment = frame.state().get('selection').first().toJSON();
+            var attachment = frame.state().get('selection').first().toJSON();
             setThumbnail(item_id, attachment);
         });
 
@@ -25,7 +25,7 @@ jQuery(document).ready(function($) {
 
     $('.remove-thumbnail-button').on('click', function(e) {
         e.preventDefault();
-        let item_id = $(this).data('item-id');
+        var item_id = $(this).data('item-id');
         $('#edit-menu-item-thumbnail-' + item_id).val('');
         $('#menu-item-thumbnail-preview-' + item_id).html('');
     });

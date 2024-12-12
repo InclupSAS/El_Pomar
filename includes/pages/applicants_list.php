@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
+// 1. Mover la definición de la función antes de su uso
 if (!function_exists('el_pomar_download_csv_applicants')) {
     function el_pomar_download_csv_applicants() {
         global $wpdb;
@@ -13,7 +14,7 @@ if (!function_exists('el_pomar_download_csv_applicants')) {
 
         header('Content-Type: text/csv; charset=UTF-8');
         header('Content-Disposition: attachment;filename=postulaciones.csv');
-        echo "\xEF\xBB\xBF"; 
+        echo "\xEF\xBB\xBF"; // Añadir BOM para UTF-8
 
         $output = fopen('php://output', 'w');
         fputcsv($output, array('Nombres', 'Apellidos', 'Tipo de Documento', 'Número de Documento', 'Celular', 'Ciudad', 'Barrio', 'Correo Electrónico', 'Cargo', 'Hoja de vida', 'Fecha de postulacion'));
@@ -39,7 +40,7 @@ if (!function_exists('el_pomar_download_csv_applicants')) {
     }
 }
 
-
+// 2. Modificar el manejo del POST para usar add_action
 add_action('admin_init', 'handle_csv_download_applicants');
 
 function handle_csv_download_applicants() {
@@ -48,7 +49,7 @@ function handle_csv_download_applicants() {
     }
 }
 
-
+// 3. El resto del código de applicants_list.php permanece igual
 function el_pomar_applicants_page() {
     global $wpdb;
     $table_name = $wpdb->prefix . 'el_pomar_applicants';
@@ -128,8 +129,8 @@ function el_pomar_applicants_page() {
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('select-all').addEventListener('click', function(event) {
-            let checkboxes = document.querySelectorAll('input[name="applicant_ids[]"]');
-            for (let i = 0; i < checkboxes.length; i++) {
+            var checkboxes = document.querySelectorAll('input[name="applicant_ids[]"]');
+            for (var i = 0; i < checkboxes.length; i++) {
                 checkboxes[i].checked = event.target.checked;
             }
         });

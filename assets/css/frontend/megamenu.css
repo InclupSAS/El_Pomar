@@ -13,6 +13,7 @@
 ul.menu-list {
     display: flex;
     gap: 20px;
+    list-style: none;
 }
 
 .main-menu .menu-item .menu-item-icon {
@@ -79,6 +80,7 @@ ul.menu-list .menu-item:hover, ul.menu-list .current-menu-item {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    list-style: none;
 }
 
 .megamenu-container .submenu li a {
