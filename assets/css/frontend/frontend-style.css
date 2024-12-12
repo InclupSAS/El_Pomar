@@ -1,0 +1,764 @@
+.nav-tabs {
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.tab {
+    width: 387px;
+    height: 119px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.tab::before {
+    content: "";
+    width: 161px;
+    height: 161px;
+    position: absolute;
+    border-radius: 100%;
+    filter: blur(38px);
+    right: -47px;
+    top: 13px;
+}
+
+.tab[data-tab="tab-El_Pomar"] {
+    background: #214475;
+}
+
+.tab[data-tab="tab-El_Pomar"]::before {
+    background: #249fcb87;
+}
+
+.tab[data-tab="tab-Mulai"] {
+    background: #502C1F;
+}
+
+.tab[data-tab="tab-Mulai"]::before {
+    background: #c8824887;
+}
+
+.tab[data-tab="tab-Levelma"] {
+    background: #008241;
+}
+
+.tab[data-tab="tab-Levelma"]::before {
+    background: #7abb3187;
+}
+
+.tab img {
+    transform: scale(0.8);
+    transition: transform 0.3s ease;
+}
+
+.tab:hover img,
+.tab.active img {
+    transform: scale(1);
+}
+
+.productsContainer .container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-top: -60px;
+}
+
+.productsContainer .tab-content {
+    width: 100%;
+    min-height: 900px;
+    gap: 20px;
+    padding: 100px;
+    border-radius: 20px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.col-25 {
+    flex: 0 0 35%;
+}
+
+.col-50 {
+    flex: 0 0 30%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.current {
+    display: flex;
+}
+
+.accordion-item {
+    border: solid 0.5px rgba(255, 255, 255, 0.5);
+    border-radius: 7px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.accordion-header {
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.category-details {
+    width: 80%;
+    padding-left: 10px;
+}
+
+.accordion-content {
+    padding-left: 80px;
+    margin-top: -15px;
+}
+
+.accordion-content .product-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    gap: 10px;
+}
+
+img.category-icon {
+    width: 62px;
+}
+
+.category-name {
+    font-size: 25px;
+    font-weight: 800;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    color: #fff;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 5px;
+}
+
+.product-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+}
+
+.product-image img {
+    max-width: 400px !important;
+    height: auto;
+}
+
+.buy-button {
+    display: block;
+    width: 197px;
+    height: 45px;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #D62631;
+    color: white;
+    text-align: center;
+    border-radius: 50px;
+    text-decoration: none;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.buy-button:hover {
+    transform: scale(0.85);
+    color: white;
+}
+
+h2#product-name {
+    font-weight: 800;
+    font-size: 50px;
+    color: #fff;
+    padding: 40px 0;
+}
+
+div#product-benefits {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.info-icon {
+    width: 92px;
+    height: 92px;
+    border: solid 2.5px #fff;
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-icon img {
+    width: 40px;
+}
+
+.benefist-descrip {
+    font-family: "Myriad Pro", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Estilos para jobs_front_render.php */
+.EP-Content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.EP-offert-content {
+    width: 60%;
+    background: #E4EBF5;
+    padding: 40px;
+    border-radius: 30px;
+}
+
+.EP-offert-content h2 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20.16px;
+    letter-spacing: 0.13em;
+    text-align: left;
+    text-transform: uppercase;
+    color: #D62631;
+}
+
+.EP-offert-content h3 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 63px;
+    text-align: left;
+    text-transform: capitalize;
+    color: #214475;    
+}
+
+.EP-offert-content p {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: clamp(0.875rem, 0.815rem + 0.2vw, 1.0625rem);
+    font-weight: 400;
+    color: #214475;    
+}
+
+button#apply-button {
+    background: #D62631;
+    color: white;
+    padding: 16px 25px 16px 25px;
+    border-radius: 50px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}    
+
+button#apply-button:hover {
+    transform: scale(0.9);
+}
+
+.EP-offert-list {
+    width: 30%;
+}
+
+.EP-accordion-item {
+    border: solid 0.5px #214475;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.EP-accordion-header {
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.EP-category-details {
+    width: 80%;
+    padding-left: 10px;
+}
+
+.EP-accordion-content {
+    padding-left: 80px;
+    margin-top: -15px;
+}
+
+img.EP-category-icon {
+    width: 62px;
+}
+
+.EP-accordion-content .EP-offert-link {
+    color: #D62631;
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    gap: 10px;
+}
+
+.EP-accordion-content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.EP-accordion-content li {
+    margin-bottom: 5px;
+}
+
+.EP-category-name {
+    font-size: 25px;
+    font-weight: 800;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    color: #214475;
+}
+
+
+div#application-form-popup, #popup-form {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: #000000eb;
+    height: 100dvh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15%;
+    z-index: 1000;
+}
+
+form#application-form {
+    background: #E4EBF5;
+    padding: 40px;
+    border-radius: 30px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-areas:
+        "first_name last_name document_type document_number"
+        "phone city neighborhood email"
+        "desired_position salary_expectation salary_expectation salary_expectation"
+        "why_join why_join why_join why_join"
+        "cv cv terms terms"
+        "submit submit submit submit";
+    gap: 20px;
+    position: relative;
+}
+
+form#application-form .col-15,
+form#application-form .col-35,
+form#application-form .col-50,
+form#application-form .col-100 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+form#application-form .col-15 {
+    grid-column: span 1;
+}
+
+form#application-form .col-35 {
+    grid-column: span 1;
+}
+
+form#application-form .col-50 {
+    grid-column: span 1;
+}
+
+form#application-form .col-100 {
+    grid-column: span 4;
+}
+
+form#application-form .close_form {
+    position: absolute;
+    top: -3dvh;
+    right: -4dvw;
+    width: 34px;
+    z-index: 999;
+}
+
+form#application-form .close_form svg, div#popup-form .close_form svg {
+    fill: #D62631;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+form#application-form .close_form:hover svg, div#popup-form .close_form:hover svg {
+    transform: scale(0.9);
+}
+
+form#application-form label {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 18.9px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #0A1F1A;
+}
+
+form#application-form input[type="text"],
+form#application-form input[type="email"],
+form#application-form input[type="tel"],
+form#application-form textarea,
+select#document_type,
+select#city {
+    background: #FFFFFF38;
+    border: solid 0.7px #626262;
+    border-radius: 5px;
+}
+
+form#application-form .custom-file-input {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+form#application-form .custom-file-input input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+form#application-form .file-label {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form#application-form .upload-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+form#application-form .file-text {
+    font-size: 14px;
+}
+
+form#application-form .terms-container, .popup-form .terms-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+form#application-form input[type="checkbox"]#terms, .popup-form input[type="checkbox"]#terms {
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #214475; 
+    border-radius: 5px;
+    background-color: #fff;
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+form#application-form input[type="checkbox"]#terms:checked, .popup-form input[type="checkbox"]#terms:checked {
+    border-color: #D62631; 
+}
+
+form#application-form input[type="checkbox"]#terms:checked::before, .popup-form input[type="checkbox"]#terms:checked::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: #D62631; 
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: translate(-50%, -50%);
+}
+
+form#application-form .terms-container label, .popup-form .terms-container label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 3px;
+}
+
+form#application-form .terms-container a, .popup-form .terms-container a {
+    color: #D62631; 
+    text-decoration: none;
+    font-weight: 600;
+}
+
+form#application-form .terms-container a:hover, .popup-form .terms-container a:hover {
+    text-decoration: underline;
+} 
+
+form#application-form .col-50:nth-child(2) {
+    grid-area: first_name;
+}
+
+form#application-form .col-50:nth-child(3) {
+    grid-area: last_name;
+}
+
+form#application-form .col-15 {
+    grid-area: document_type;
+}
+
+form#application-form .col-35 {
+    grid-area: document_number;
+}
+
+form#application-form .col-50:nth-child(6) {
+    grid-area: phone;
+}
+
+form#application-form .col-50:nth-child(7) {
+    grid-area: city;
+}
+
+form#application-form .col-50:nth-child(8) {
+    grid-area: neighborhood;
+}
+
+form#application-form .col-50:nth-child(9) {
+    grid-area: email;
+}
+
+form#application-form .col-50:nth-child(10) {
+    grid-area: desired_position;
+}
+
+form#application-form .col-100:nth-child(11) {
+    grid-area: salary_expectation;
+}
+
+form#application-form .col-100:nth-child(12) {
+    grid-area: why_join;
+}
+
+form#application-form .col-100.custom-file-input {
+    grid-area: cv;
+}
+
+form#application-form .col-100.terms-container {
+    grid-area: terms;
+}
+
+form#application-form button[type="submit"] {
+    grid-area: submit;
+    border-radius: 50px;
+    background: #D62631;
+    color: white;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    text-transform: uppercase;
+}
+
+form#application-form button[type="submit"]:hover {
+    transform: scale(0.9);
+}
+
+
+
+/* Estilos para el formulario emergente */
+
+
+.popup-form .popup-content {
+    background: #E4EBF5;
+    padding: 20px;
+    border-radius: 30px;
+    width: 90%;
+    max-width: 650px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.popup-form .popup-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #214475;
+}
+
+div#popup-form .close_form {
+    position: absolute;
+    top: -3dvh;
+    right: -4dvw;
+    width: 34px;
+    z-index: 999;
+}
+
+div#popup-form .close_form svg {
+    fill: #D62631;}
+
+.download-form .form-group {
+    margin-bottom: 15px;
+}
+
+.download-form .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.download-form .form-check {
+    margin-right: 10px;
+}
+
+.col-100 {
+    width: 100%;
+}
+
+.terms-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+div#popup-form .submit-button {
+    background: #D62631;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.submit-button:hover {
+    transform: scale(0.9);
+}
+
+
+
+@media (max-width: 1024px) {
+    .productsContainer .tab-content {
+        flex-direction: column;
+        padding: 80px 10px;
+    }
+
+    .accordion {
+        display: grid;
+        grid-template-columns: 350px 350px;
+        grid-gap: 20px;
+    }
+
+    img.category-icon {
+        width: 62px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-tabs {
+        gap: 10px;
+    }
+
+    .tab {
+        width: 109px;
+        height: 72px;
+    }
+
+    .tab img {
+        width: 70%;
+    }
+
+    .accordion {
+        display: grid;
+        grid-template-columns: 170px 170px;
+        grid-gap: 10px;
+    }
+
+    img.category-icon {
+        width: 30px;
+    }
+
+    .category-name {
+        font-size: 10px;
+    }
+
+    img.toggle-icon {
+        width: 17px;
+    }
+
+    .accordion-content .product-link {
+        font-size: 10px;
+    }
+
+    .accordion-content {
+        padding-left: 10px;
+        margin-top: 5px;
+    }
+
+    .accordion-content ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .product-image img {
+        max-width: 315px !important;
+    }
+
+    h2#product-name {
+        font-size: 20px;
+        padding: 15px 0;
+    }
+
+    .info-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .info-icon img {
+        width: 18px;
+    }
+
+    .benefist-descrip {
+        font-size: 10px;
+    }
+}

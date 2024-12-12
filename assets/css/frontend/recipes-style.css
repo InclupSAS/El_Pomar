@@ -1,0 +1,168 @@
+div#recipe-content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    color: #214475;
+    font-family: Plus Jakarta Sans;
+}
+
+.pdf-title {
+    display: none;
+    font-size: 50px;
+    font-weight: 800;
+    line-height: 63px;
+    text-align: left;
+}
+
+.recipe-thumbnail {
+    width: 100%;
+    height: 460px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 20px;
+    border-radius: 20px;
+}
+
+span.post-date {
+    display: flex;
+    width: 100%;
+    text-transform: capitalize;
+    color: #504E4E;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.recipe-metabox {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.recipe-metabox h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.recipe-ingredients {
+    list-style-type: disc;
+    padding-left: 50px;
+}
+
+.recipe-ingredients li {
+    color: #504E4E;
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.recipe-metadata{
+    border-left: solid 1px #E4EBF5 ;
+    padding-left: 5px;
+}
+
+.recipe-metadata section {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.recipe-metadata section.difficulty {
+    align-items: flex-start;
+}
+
+.recipe-metadata h5 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.recipe-metadata p {
+    font-size: 18px;
+    font-weight: 400;
+    color: #D62631;
+}
+
+.icon-difficulty svg {
+    margin-right: 5px;
+    width: 13px;
+}
+
+
+.quote {
+    position: relative;
+    font-size: 17px;
+    font-weight: 500;
+    font-style: italic;
+    color: #D62631;
+    font-family: Plus Jakarta Sans;
+    padding-left:70px ;
+    margin-top: 30px;
+}
+
+.quote::before {
+    content: "“";
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: -35px;
+    max-height: 50px;
+}
+
+
+.recipe-actions {
+    display: flex;
+	flex-wrap:wrap;
+	gap:15px
+}
+
+.recipe-actions button {
+    display: flex;
+    justify-content: center;
+    padding: 16px 25px;
+    text-decoration: none;
+    border-radius: 50px;
+    margin-right: 10px;
+    border: none;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.download-recipe, .download-recipe:focus{
+    background-color: #214475;
+    color: white;
+    width: 234px;
+}
+
+.download-recipe:hover{
+    background-color: #214475;
+    color: white;
+    transform: scale(0.9);
+}
+
+.buy-product, .buy-product:focus {
+    background-color: #D62631;
+    color: white;
+    width: 181px;
+}
+
+.buy-product:hover {
+    background-color: #D62631;
+    color: white;
+    transform: scale(0.9);
+}
+
+.download-recipe span, .buy-product span {
+    display: flex;
+}
+
+.download-recipe svg {
+    margin-left: 5px;
+    width: 24px;
+}
+
+.buy-product svg {
+    margin-left: 5px;
+    height: 27px;
+}

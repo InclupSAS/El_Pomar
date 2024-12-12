@@ -1,0 +1,96 @@
+/* assets/css/frontend/floating-button.css */
+
+#el-pomar-floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+#el-pomar-floating-button-icon {
+    width: 80px;
+    height: 80px;
+    background-color: #214475;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+#el-pomar-floating-button-icon img {
+    width: 50%;
+    height: 50%;
+}
+
+#el-pomar-floating-options {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    width: 80px;
+    right: 0;
+    background: #fff;
+    border: 2px solid #D62631;
+    border-radius: 37.5px;
+    padding: 20px 20px 80px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    animation: expandUp 0.3s ease-out;
+    z-index: -1;
+}
+
+.el-pomar-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.el-pomar-option:hover svg {
+    background: #D62631;
+    border-radius: 100%;
+}
+
+.el-pomar-option:hover svg path {
+    fill: #fff;
+}
+
+#el-pomar-call-us:hover svg path:first-of-type {
+    fill: #D62631;
+}
+
+.el-pomar-option span {
+    margin-top: 5px;
+    font-family: Plus Jakarta Sans;
+    font-size: 12px;
+    font-weight: 600;
+    color: #214475;
+
+}
+
+@keyframes expandUp {
+    from {
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+    to {
+        opacity: 1;
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+}
+
+@keyframes collapseDown {
+    from {
+        opacity: 1;
+        transform: scaleY(1);
+        transform-origin: bottom;
+    }
+    to {
+        opacity: 0;
+        transform: scaleY(0);
+        transform-origin: bottom;
+    }
+}
