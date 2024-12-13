@@ -3,7 +3,7 @@
  * Plugin Name: El Pomar
  * Plugin URI: https://inclup.com/
  * Description: Gestiona tu catalogo de productos, publica ofertas laborales, crea nuevas recetas y muestra las noticias de tu empresa.
- * Version: 2.3.2
+ * Version: 2.3.4
  * Author: KerackDiaz
  * Author URI: https://github.com/KerackDiaz
  * License: GPLv2
@@ -23,7 +23,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('EP_VERSION')) {
-    define('EP_VERSION', '2.3.2');
+    define('EP_VERSION', '2.3.4');
 }
 
 if (!defined('EP_FILE')) {

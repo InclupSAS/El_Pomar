@@ -4,7 +4,7 @@ Plugin para WordPress que facilita la administración y visualización del catá
 
 ## Información
 
-- **Versión:** 2.3.2
+- **Versión:** 2.3.4
 - **Requiere WordPress:** 6.6.2 o superior
 - **Probado hasta:** 6.6.2  
 - **Requiere PHP:** 8.0
@@ -77,6 +77,10 @@ Sí, puedes insertar los shortcodes en cualquier constructor compatible.
 
 ## Registro de Cambios
 
+### 2.3.4
+- Correcciones en estilos tanto en el dashboard como en el frondend.
+- se agregaron funciones para carga de archivos multimedia en noticias y descarga o reproducion de los mismos.
+
 ### 2.3.2
 - Corrección en la generación de los archivo csv de los leaks captados en los formularios de ofertas laborales y recetas.
 - Se crearon campos personalizados para agregar número telefonico y whatsapp para contacto directo.
@@ -109,3 +113,6 @@ Sí, puedes insertar los shortcodes en cualquier constructor compatible.
 - Panel de administración mejorado.
 - Protección de rutas.
 - Shortcode para integración.
+
+
+

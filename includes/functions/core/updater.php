@@ -11,8 +11,8 @@ class El_Pomar_GitHub_Updater {
     private $basename;
     private $active;
     private $github_response;
-    private $github_repo = 'El_Pomar';
-    private $github_user = 'InclupSAS';
+    private $github_repo = 'El_PomarCoreWP';
+    private $github_user = 'KerackDiaz';
     private $access_token = '';
 
     public function __construct($file) {

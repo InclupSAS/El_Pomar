@@ -52,7 +52,6 @@ function el_pomar_register_news_post_type() {
     register_post_type('news', $args);
 }
 
-
 function el_pomar_add_news_metaboxes() {
     add_meta_box(
         'el_pomar_news_details',
@@ -71,6 +70,8 @@ function el_pomar_news_details_callback($post) {
     $news_source = get_post_meta($post->ID, '_el_pomar_news_source', true);
     $news_source_url = get_post_meta($post->ID, '_el_pomar_news_source_url', true);
     $publication_date = get_post_meta($post->ID, '_el_pomar_publication_date', true);
+    $audio_file = get_post_meta($post->ID, '_el_pomar_audio_file', true);
+    $pdf_file = get_post_meta($post->ID, '_el_pomar_pdf_file', true);
 
     echo '<div id="el_pomar_news_details">';
     echo '<div class="inline-fields">';
@@ -87,6 +88,16 @@ function el_pomar_news_details_callback($post) {
 
     echo '<label for="el_pomar_news_source_url">URL del Medio:</label>';
     echo '<input type="text" id="el_pomar_news_source_url" name="el_pomar_news_source_url" value="' . esc_attr($news_source_url) . '">';
+    echo '</div>';
+
+    echo '<div class="inline-fields">';
+    echo '<label for="el_pomar_audio_file">Archivo de Audio:</label>';
+    echo '<input type="text" id="el_pomar_audio_file" name="el_pomar_audio_file" value="' . esc_attr($audio_file) . '">';
+    echo '<button type="button" class="button" id="upload_audio_button">Subir Audio</button>';
+
+    echo '<label for="el_pomar_pdf_file">Archivo PDF:</label>';
+    echo '<input type="text" id="el_pomar_pdf_file" name="el_pomar_pdf_file" value="' . esc_attr($pdf_file) . '">';
+    echo '<button type="button" class="button" id="upload_pdf_button">Subir PDF</button>';
     echo '</div>';
     echo '</div>';
 }
@@ -119,8 +130,113 @@ function el_pomar_save_news_details($post_id) {
     if (isset($_POST['el_pomar_publication_date'])) {
         update_post_meta($post_id, '_el_pomar_publication_date', sanitize_text_field($_POST['el_pomar_publication_date']));
     }
+
+    if (isset($_POST['el_pomar_audio_file'])) {
+        update_post_meta($post_id, '_el_pomar_audio_file', esc_url_raw($_POST['el_pomar_audio_file']));
+    }
+
+    if (isset($_POST['el_pomar_pdf_file'])) {
+        update_post_meta($post_id, '_el_pomar_pdf_file', esc_url_raw($_POST['el_pomar_pdf_file']));
+    }
 }
+
+function el_pomar_enqueue_admin_scripts($hook) {
+    if ('post.php' !== $hook && 'post-new.php' !== $hook) {
+        return;
+    }
+
+    wp_enqueue_media();
+    wp_enqueue_script('el_pomar_admin_script', plugin_dir_url(__FILE__) . 'admin-script.js', array('jquery'), null, true);
+
+    // Inline script to handle media uploads
+    $script = <<<EOT
+    jQuery(document).ready(function($) {
+        $('#upload_audio_button').on('click', function(e) {
+            e.preventDefault();
+            var file_frame = wp.media.frames.file_frame = wp.media({
+                title: 'Seleccionar o Subir Archivo de Audio',
+                button: {
+                    text: 'Usar este archivo'
+                },
+                multiple: false
+            });
+
+            file_frame.on('select', function() {
+                var attachment = file_frame.state().get('selection').first().toJSON();
+                $('#el_pomar_audio_file').val(attachment.url);
+            });
+
+            file_frame.open();
+        });
+
+        $('#upload_pdf_button').on('click', function(e) {
+            e.preventDefault();
+            var file_frame = wp.media.frames.file_frame = wp.media({
+                title: 'Seleccionar o Subir Archivo PDF',
+                button: {
+                    text: 'Usar este archivo'
+                },
+                multiple: false
+            });
+
+            file_frame.on('select', function() {
+                var attachment = file_frame.state().get('selection').first().toJSON();
+                $('#el_pomar_pdf_file').val(attachment.url);
+            });
+
+            file_frame.open();
+        });
+    });
+    EOT;
+
+    wp_add_inline_script('el_pomar_admin_script', $script);
+}
+add_action('admin_enqueue_scripts', 'el_pomar_enqueue_admin_scripts');
 
 add_action('init', 'el_pomar_register_news_post_type');
 add_action('add_meta_boxes', 'el_pomar_add_news_metaboxes');
 add_action('save_post', 'el_pomar_save_news_details');
+
+function el_pomar_render_news_buttons() {
+    $post_id = get_the_ID();
+    $audio_file = get_post_meta($post_id, '_el_pomar_audio_file', true);
+    $pdf_file = get_post_meta($post_id, '_el_pomar_pdf_file', true);
+    $news_url = get_post_meta($post_id, '_el_pomar_news_url', true);
+
+    // Depuración
+    error_log('Audio File: ' . $audio_file);
+    error_log('PDF File: ' . $pdf_file);
+    error_log('News URL: ' . $news_url);
+
+    ob_start();
+    echo '<div class="el-pomar-news-buttons">';
+
+    if ($audio_file) {
+        echo '<div class="news-button">';
+        echo '<audio controls>';
+        echo '<source src="' . esc_url($audio_file) . '" type="audio/mpeg">';
+        echo 'Tu navegador no soporta el elemento de audio.';
+        echo '</audio>';
+        echo '</div>';
+    }
+
+    if ($pdf_file) {
+        echo '<div class="news-button">';
+        echo '<a href="' . esc_url($pdf_file) . '" class="button" download>Descargar PDF</a>';
+        echo '</div>';
+    }
+
+    if ($news_url) {
+        echo '<div class="news-button">';
+        echo '<a href="' . esc_url($news_url) . '" class="button" target="_blank">Ver Noticia</a>';
+        echo '</div>';
+    }
+
+    echo '</div>';
+    return ob_get_clean();
+}
+
+function el_pomar_news_buttons_shortcode() {
+    return el_pomar_render_news_buttons();
+}
+add_shortcode('el_pomar_news_buttons', 'el_pomar_news_buttons_shortcode');
