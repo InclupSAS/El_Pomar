@@ -4,7 +4,7 @@ Plugin para WordPress que facilita la administración y visualización del catá
 
 ## Información
 
-- **Versión:** 2.3.4
+- **Versión:** 2.3.5
 - **Requiere WordPress:** 6.6.2 o superior
 - **Probado hasta:** 6.6.2  
 - **Requiere PHP:** 8.0
@@ -77,7 +77,7 @@ Sí, puedes insertar los shortcodes en cualquier constructor compatible.
 
 ## Registro de Cambios
 
-### 2.3.4
+### 2.3.5
 - Correcciones en estilos tanto en el dashboard como en el frondend.
 - se agregaron funciones para carga de archivos multimedia en noticias y descarga o reproducion de los mismos.
 

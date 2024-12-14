@@ -3,7 +3,7 @@
  * Plugin Name: El Pomar
  * Plugin URI: https://inclup.com/
  * Description: Gestiona tu catalogo de productos, publica ofertas laborales, crea nuevas recetas y muestra las noticias de tu empresa.
- * Version: 2.3.4
+ * Version: 2.3.5
  * Author: KerackDiaz
  * Author URI: https://github.com/KerackDiaz
  * License: GPLv2
@@ -23,16 +23,24 @@ if (!defined('ABSPATH')) {
 }
 
 if (!defined('EP_VERSION')) {
-    define('EP_VERSION', '2.3.4');
+    define('EP_VERSION', '2.3.5');
 }
 
 if (!defined('EP_FILE')) {
     define('EP_FILE', __FILE__);
 }
 
-/** Define las constantes antes de usarlas */
+// Usa un prefijo único para el directorio del plugin
+if (!defined('EP_PLUGIN_DIR_NAME')) {
+    define('EP_PLUGIN_DIR_NAME', 'El_Pomar');
+}
+
+// Define la ruta completa
+if (!defined('EP_PLUGIN_DIR')) {
+    define('EP_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . EP_PLUGIN_DIR_NAME . '/');
+}
+
 define('EP_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('EP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
 if (!function_exists('is_plugin_active')) {
     include_once ABSPATH . 'wp-admin/includes/plugin.php';
@@ -62,6 +70,9 @@ if (!class_exists(('El_Pomar_Core'))) {
          * Constructor functions
          */
         private function __construct() {
+            // Verifica la integridad del directorio del plugin
+            $this->verify_plugin_directory();
+
             register_activation_hook(EP_FILE, array(__CLASS__, 'EP_activate'));
             register_deactivation_hook(EP_FILE, array(__CLASS__, 'EP_deactivate'));
             add_action('wp_enqueue_scripts', array($this, 'enqueue_frontend_styles'));
@@ -105,9 +116,69 @@ if (!class_exists(('El_Pomar_Core'))) {
         }
 
         /**
+         * Verifica la integridad del directorio del plugin
+         */
+        private function verify_plugin_directory() {
+            // Verifica si el directorio existe
+            if (!file_exists(EP_PLUGIN_DIR)) {
+                wp_mkdir_p(EP_PLUGIN_DIR);
+            }
+            
+            // Verifica si los archivos principales existen
+            $main_files = array(
+            'includes/menu.php',
+            'includes/pages/admin_page.php',
+            'includes/pages/about.php',
+            'includes/pages/home.php',
+            'includes/pages/settings.php',
+            'includes/pages/settings.php',
+            'includes/functions/catalog/catalog_post_type.php',
+            'includes/functions/catalog/catalog_front_render.php',
+            'includes/pages/settings/catalog_settings.php',
+            'includes/functions/jobs/jobs_post_type.php',
+            'includes/functions/jobs/jobs_front_render.php',
+            'includes/functions/jobs/applicants.php',
+            'includes/pages/applicants_list.php',
+            'includes/pages/settings/jobs_settings.php',
+            'includes/functions/recipes/recipes_post_type.php',
+            'includes/functions/recipes/recipes_front_render.php',
+            'includes/functions/recipes/recipes_form_db.php',
+            'includes/pages/recipes_form_list.php',
+            'includes/functions/news/news_post_type.php',
+            'includes/functions/core/menu-item-thumbnails.php',
+            'includes/functions/core/megamenu_front_render.php',
+            'includes/pages/settings/global_settings.php',
+            'includes/functions/core/updater.php',
+            'includes/functions/core/contact.php',
+            'includes/functions/core/product_redirect.php'
+            );
+            
+            foreach ($main_files as $file) {
+                if (!file_exists(EP_PLUGIN_DIR . $file)) {
+                    // Registra el error o notifica
+                    error_log('El Pomar: Archivo faltante - ' . $file);
+                    
+                    // Opcionalmente restaura desde backup
+                    $this->restore_plugin_file($file);
+                }
+            }
+        }
+
+        /**
          * Función de activación del plugin
          */
         public static function EP_activate() {
+            // Verifica que el directorio del plugin sea correcto
+            if (dirname(plugin_basename(__FILE__)) !== EP_PLUGIN_DIR_NAME) {
+                deactivate_plugins(plugin_basename(__FILE__));
+                wp_die(
+                    sprintf(
+                        __('Este plugin debe estar instalado en el directorio "%s"', 'el-pomar'),
+                        EP_PLUGIN_DIR_NAME
+                    )
+                );
+            }
+            
             update_option('EP_version', EP_VERSION);
             el_pomar_create_applicants_table();
             el_pomar_create_form_table();
@@ -230,4 +301,33 @@ function el_pomar_update_notice() {
         <p><?php esc_html_e('Update check completed. If an update is available, it will be installed shortly.', 'el-pomar'); ?></p>
     </div>
     <?php
+}
+
+// Hook para monitorear cambios
+add_action('upgrader_process_complete', 'el_pomar_upgrade_completed', 10, 2);
+
+function el_pomar_upgrade_completed($upgrader_object, $options) {
+    // Verifica si se está actualizando plugins
+    if ($options['type'] === 'plugin') {
+        // Verifica la integridad después de cualquier actualización
+        $instance = El_Pomar_Core::get_instance();
+        $instance->verify_plugin_directory();
+    }
+}
+
+// Protección contra sobrescritura
+add_filter('upgrader_pre_install', 'el_pomar_pre_install', 10, 2);
+
+function el_pomar_pre_install($response, $plugin) {
+    // Verifica si se está intentando instalar sobre el directorio de El Pomar
+    if (isset($plugin['plugin']) && strpos($plugin['plugin'], EP_PLUGIN_DIR_NAME) !== false) {
+        return new WP_Error(
+            'plugin_install_error',
+            sprintf(
+                __('No se puede instalar sobre el directorio protegido %s', 'el-pomar'),
+                EP_PLUGIN_DIR_NAME
+            )
+        );
+    }
+    return $response;
 }
