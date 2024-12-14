@@ -4,7 +4,7 @@ Plugin para WordPress que facilita la administración y visualización del catá
 
 ## Información
 
-- **Versión:** 2.3.5
+- **Versión:** 2.4.1
 - **Requiere WordPress:** 6.6.2 o superior
 - **Probado hasta:** 6.6.2  
 - **Requiere PHP:** 8.0
