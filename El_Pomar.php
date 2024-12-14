@@ -30,14 +30,9 @@ if (!defined('EP_FILE')) {
     define('EP_FILE', __FILE__);
 }
 
-// Usa un prefijo único para el directorio del plugin
-if (!defined('EP_PLUGIN_DIR_NAME')) {
-    define('EP_PLUGIN_DIR_NAME', 'el-pomar-core'); // Nombre único del directorio
-}
-
-// Define la ruta completa
+// Define la ruta completa 
 if (!defined('EP_PLUGIN_DIR')) {
-    define('EP_PLUGIN_DIR', WP_PLUGIN_DIR . '/' . EP_PLUGIN_DIR_NAME . '/');
+    define('EP_PLUGIN_DIR', plugin_dir_path(__FILE__));
 }
 
 define('EP_PLUGIN_URL', plugin_dir_url(__FILE__));
@@ -182,7 +177,8 @@ if (!class_exists(('El_Pomar_Core'))) {
          */
         public static function EP_activate() {
             // Verifica que el directorio del plugin sea correcto
-            if (dirname(plugin_basename(__FILE__)) !== EP_PLUGIN_DIR_NAME) {
+            $plugin_dir_name = basename(dirname(__FILE__));
+            if ($plugin_dir_name !== EP_PLUGIN_DIR_NAME) {
                 deactivate_plugins(plugin_basename(__FILE__));
                 wp_die(
                     sprintf(
