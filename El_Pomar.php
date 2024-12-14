@@ -32,7 +32,7 @@ if (!defined('EP_FILE')) {
 
 // Usa un prefijo único para el directorio del plugin
 if (!defined('EP_PLUGIN_DIR_NAME')) {
-    define('EP_PLUGIN_DIR_NAME', 'El_Pomar');
+    define('EP_PLUGIN_DIR_NAME', 'el-pomar-core'); // Nombre único del directorio
 }
 
 // Define la ruta completa
@@ -118,7 +118,7 @@ if (!class_exists(('El_Pomar_Core'))) {
         /**
          * Verifica la integridad del directorio del plugin
          */
-        private function verify_plugin_directory() {
+        public function verify_plugin_directory() {
             // Verifica si el directorio existe
             if (!file_exists(EP_PLUGIN_DIR)) {
                 wp_mkdir_p(EP_PLUGIN_DIR);
@@ -126,31 +126,9 @@ if (!class_exists(('El_Pomar_Core'))) {
             
             // Verifica si los archivos principales existen
             $main_files = array(
-            'includes/menu.php',
-            'includes/pages/admin_page.php',
-            'includes/pages/about.php',
-            'includes/pages/home.php',
-            'includes/pages/settings.php',
-            'includes/pages/settings.php',
-            'includes/functions/catalog/catalog_post_type.php',
-            'includes/functions/catalog/catalog_front_render.php',
-            'includes/pages/settings/catalog_settings.php',
-            'includes/functions/jobs/jobs_post_type.php',
-            'includes/functions/jobs/jobs_front_render.php',
-            'includes/functions/jobs/applicants.php',
-            'includes/pages/applicants_list.php',
-            'includes/pages/settings/jobs_settings.php',
-            'includes/functions/recipes/recipes_post_type.php',
-            'includes/functions/recipes/recipes_front_render.php',
-            'includes/functions/recipes/recipes_form_db.php',
-            'includes/pages/recipes_form_list.php',
-            'includes/functions/news/news_post_type.php',
-            'includes/functions/core/menu-item-thumbnails.php',
-            'includes/functions/core/megamenu_front_render.php',
-            'includes/pages/settings/global_settings.php',
-            'includes/functions/core/updater.php',
-            'includes/functions/core/contact.php',
-            'includes/functions/core/product_redirect.php'
+                'el-pomar.php',
+                'includes/menu.php',
+                'assets/css/frontend/frontend-style.css'
             );
             
             foreach ($main_files as $file) {
@@ -160,6 +138,41 @@ if (!class_exists(('El_Pomar_Core'))) {
                     
                     // Opcionalmente restaura desde backup
                     $this->restore_plugin_file($file);
+                }
+            }
+        }
+
+        /**
+         * Restaurar archivo del plugin desde el backup
+         */
+        private function restore_plugin_file($file) {
+            // Ruta del backup
+            $backup_path = EP_PLUGIN_DIR . 'backup/' . $file;
+            
+            if (file_exists($backup_path)) {
+                copy($backup_path, EP_PLUGIN_DIR . $file);
+                error_log('El Pomar: Archivo restaurado - ' . $file);
+            }
+        }
+
+        /**
+         * Crear backup de los archivos del plugin
+         */
+        public static function create_backup() {
+            $backup_dir = EP_PLUGIN_DIR . 'backup/';
+            if (!file_exists($backup_dir)) {
+                wp_mkdir_p($backup_dir);
+            }
+            
+            $files_to_backup = array(
+                'el-pomar.php',
+                'includes/menu.php',
+                'assets/css/frontend/frontend-style.css'
+            );
+            
+            foreach ($files_to_backup as $file) {
+                if (file_exists(EP_PLUGIN_DIR . $file)) {
+                    copy(EP_PLUGIN_DIR . $file, $backup_dir . $file);
                 }
             }
         }
@@ -311,7 +324,9 @@ function el_pomar_upgrade_completed($upgrader_object, $options) {
     if ($options['type'] === 'plugin') {
         // Verifica la integridad después de cualquier actualización
         $instance = El_Pomar_Core::get_instance();
-        $instance->verify_plugin_directory();
+        if (method_exists($instance, 'verify_plugin_directory')) {
+            $instance->verify_plugin_directory();
+        }
     }
 }
 
@@ -331,3 +346,18 @@ function el_pomar_pre_install($response, $plugin) {
     }
     return $response;
 }
+
+// Crear backup al iniciar admin
+add_action('admin_init', function() {
+    if (!defined('WP_INSTALLING')) {
+        El_Pomar_Core::create_backup();
+    }
+});
+
+// Prevenir eliminación directa
+add_filter('plugin_action_links_' . plugin_basename(EP_FILE), function($links) {
+    if (isset($links['delete'])) {
+        unset($links['delete']);
+    }
+    return $links;
+});
