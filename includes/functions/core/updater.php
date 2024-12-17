@@ -14,32 +14,29 @@ class El_Pomar_GitHub_Updater {
     private $github_repo = 'El_Pomar';
     private $github_user = 'InclupSAS';
     private $access_token = '';
-    private $plugin_slug;
 
     public function __construct($file) {
         $this->file = $file;
-        $this->basename = plugin_basename($file);
-        $this->plugin_slug = dirname($this->basename);
+        $this->initialize();
+    }
+
+    private function initialize() {
         if (is_admin()) {
-            $this->init_plugin_data();
-            $this->set_plugin_hooks();
+            add_action('admin_init', array($this, 'set_plugin_properties'));
+            add_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'));
+            add_filter('plugins_api', array($this, 'plugin_popup'), 10, 3);
+            add_filter('upgrader_post_install', array($this, 'after_install'), 10, 3);
+            add_action('admin_notices', array($this, 'show_update_notification'));
         }
     }
 
-    private function init_plugin_data() {
+    public function set_plugin_properties() {
         if (!function_exists('get_plugin_data')) {
             require_once(ABSPATH . 'wp-admin/includes/plugin.php');
         }
         $this->plugin = get_plugin_data($this->file);
         $this->basename = plugin_basename($this->file);
         $this->active = is_plugin_active($this->basename);
-    }
-
-    private function set_plugin_hooks() {
-        add_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'));
-        add_filter('plugins_api', array($this, 'plugin_popup'), 10, 3);
-        add_filter('upgrader_post_install', array($this, 'after_install'), 10, 3);
-        add_action('admin_notices', array($this, 'show_update_notification'));
     }
 
     private function get_repository_info() {
@@ -81,9 +78,9 @@ class El_Pomar_GitHub_Updater {
 
         if (!empty($this->github_response)) {
             $version = ltrim($this->github_response->tag_name, 'vV');
-            $current_version = $this->plugin['Version'];
+            $current_version = isset($this->plugin['Version']) ? $this->plugin['Version'] : null;
 
-            if (version_compare($version, $current_version, '>')) {
+            if ($current_version && version_compare($version, $current_version, '>')) {
                 $plugin = array(
                     'url' => $this->plugin["PluginURI"],
                     'slug' => current(explode('/', $this->basename)),
@@ -137,45 +134,15 @@ class El_Pomar_GitHub_Updater {
 
     public function after_install($response, $hook_extra, $result) {
         global $wp_filesystem;
-
-        // Verificar que esta actualización es para nuestro plugin
-        if (!isset($hook_extra['plugin']) || $hook_extra['plugin'] !== $this->basename) {
-            return $result;
-        }
-
         $install_directory = plugin_dir_path($this->file);
-        $wp_filesystem->mkdir($install_directory);
         
-        // Obtener el nombre del directorio principal dentro del ZIP
-        $temp_files = $wp_filesystem->dirlist($result['destination'], true);
-        if (empty($temp_files)) {
-            return new WP_Error('no_files', 'No se encontraron archivos en el paquete de actualización');
-        }
-        
-        $temp_folder_names = array_keys($temp_files);
-        $main_folder = $temp_folder_names[0];
-        $source_directory = trailingslashit($result['destination']) . trailingslashit($main_folder);
-
-        // Copiar archivos desde el directorio temporal al directorio del plugin
-        if ($wp_filesystem->is_dir($source_directory)) {
-            // Copiar los nuevos archivos
-            $copy_result = copy_dir($source_directory, $install_directory);
-            
-            if (is_wp_error($copy_result)) {
-                return new WP_Error(
-                    'install_error',
-                    sprintf('Error copiando archivos: %s', $copy_result->get_error_message())
-                );
-            }
+        if ($wp_filesystem->exists($install_directory)) {
+            $wp_filesystem->delete($install_directory, true);
         }
 
-        // Limpiar el directorio temporal
-        $wp_filesystem->delete($result['destination'], true);
-
-        // Actualizar la ruta de destino para WordPress
+        $wp_filesystem->move($result['destination'], $install_directory);
         $result['destination'] = $install_directory;
 
-        // Reactivar el plugin si estaba activo
         if ($this->active) {
             activate_plugin($this->basename);
         }
@@ -192,7 +159,7 @@ class El_Pomar_GitHub_Updater {
 
         if (!empty($this->github_response)) {
             $version = ltrim($this->github_response->tag_name, 'vV');
-            if (version_compare($version, $this->plugin['Version'], '>')) {
+            if (isset($this->plugin['Version']) && version_compare($version, $this->plugin['Version'], '>')) {
                 $update_url = wp_nonce_url(
                     add_query_arg(
                         array(
@@ -213,11 +180,26 @@ class El_Pomar_GitHub_Updater {
             }
         }
     }
+
+    public function maybe_update_plugin() {
+        $this->get_repository_info();
+
+        if (!empty($this->github_response)) {
+            $version = ltrim($this->github_response->tag_name, 'vV');
+            if (isset($this->plugin['Version']) && version_compare($version, $this->plugin['Version'], '>')) {
+                // Ejecutar la actualización del plugin
+                $this->update_plugin();
+            }
+        }
+    }
+
+    private function update_plugin() {
+        // Lógica para actualizar el plugin
+    }
 }
 
 function initialize_el_pomar_updater() {
-    if (defined('EL_POMAR_PLUGIN_FILE')) {
-        new El_Pomar_GitHub_Updater(EL_POMAR_PLUGIN_FILE);
-    }
+    $updater = new El_Pomar_GitHub_Updater(EP_FILE);
+    $updater->maybe_update_plugin();
 }
 add_action('init', 'initialize_el_pomar_updater');

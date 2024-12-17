@@ -175,7 +175,17 @@ if (!function_exists('Pomar_core_menu')) {
             'dashicons-megaphone',
             34
         );
+
+        // Menú para términos y condiciones
+        add_menu_page(
+            'Términos y Condiciones',
+            'Términos y Condiciones',
+            'manage_options',
+            'edit.php?post_type=terms_and_conditions',
+            '',
+            'dashicons-text-page',
+            35
+        );
     }
     add_action('admin_menu', 'Pomar_core_menu');
 }
-
