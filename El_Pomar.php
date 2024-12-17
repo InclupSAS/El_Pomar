@@ -38,7 +38,7 @@ if (!function_exists('is_plugin_active')) {
     include_once ABSPATH . 'wp-admin/includes/plugin.php';
 }
 
-if (!class_exists(('El_Pomar_Core'))) {
+if (!class_exists('El_Pomar_Core')) {
     /**
      * Main Class start here
      */
@@ -76,7 +76,6 @@ if (!class_exists(('El_Pomar_Core'))) {
             add_action('wp_ajax_nopriv_el_pomar_submit_application', 'el_pomar_register_applicant');
             add_action('wp_enqueue_scripts', array($this, 'enqueue_custom_styles'));
             add_action('admin_footer', array($this, 'custom_admin_footer'));
-            add_action('plugin_action_links_' . plugin_basename(__FILE__), array($this, 'plugin_action_links'));
             require_once EP_PLUGIN_DIR . 'includes/menu.php';
             require_once EP_PLUGIN_DIR . 'includes/pages/admin_page.php';
             include_once EP_PLUGIN_DIR . 'includes/pages/about.php';
@@ -99,7 +98,6 @@ if (!class_exists(('El_Pomar_Core'))) {
             require_once EP_PLUGIN_DIR . 'includes/functions/core/menu-item-thumbnails.php';
             require_once EP_PLUGIN_DIR . 'includes/functions/core/megamenu_front_render.php';
             require_once EP_PLUGIN_DIR . 'includes/pages/settings/global_settings.php';
-            require_once EP_PLUGIN_DIR . 'includes/functions/core/updater.php'; 
             require_once EP_PLUGIN_DIR . 'includes/functions/core/contact.php';
             require_once EP_PLUGIN_DIR . 'includes/functions/core/product_redirect.php';
             require_once EP_PLUGIN_DIR . 'includes/functions/terms_and_Conditions/termsAndCondition_post_type.php';
@@ -109,7 +107,6 @@ if (!class_exists(('El_Pomar_Core'))) {
          * Función de activación del plugin
          */
         public static function EP_activate() {
-            update_option('EP_version', EP_VERSION);
             el_pomar_create_applicants_table();
             el_pomar_create_form_table();
         }
@@ -201,34 +198,8 @@ if (!class_exists(('El_Pomar_Core'))) {
             }
         }
 
-
-        /**
-         * Agregar enlace para comprobar actualizaciones
-         */
-        public function plugin_action_links($links) {
-            $update_link = '<a href="' . esc_url(add_query_arg('ep_check_update', '1', admin_url('plugins.php'))) . '">' . __('Check for Updates', 'El Pomar') . '</a>';
-            array_unshift($links, $update_link);
-            return $links;
-        }
     }
 
     El_Pomar_Core::get_instance();
 }
 
-add_action('admin_init', 'el_pomar_check_update');
-
-function el_pomar_check_update() {
-    if (isset($_GET['ep_check_update']) && $_GET['ep_check_update'] == '1') {
-        delete_site_transient('update_plugins');
-        wp_update_plugins(); // Forzar la actualización de plugins
-        add_action('admin_notices', 'el_pomar_update_notice');
-    }
-}
-
-function el_pomar_update_notice() {
-    ?>
-    <div class="notice notice-success is-dismissible">
-        <p><?php esc_html_e('Update check completed. If an update is available, it will be installed shortly.', 'el-pomar'); ?></p>
-    </div>
-    <?php
-}

@@ -152,22 +152,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    let hash = window.location.hash;
-    if (hash) {
-        let parts = hash.split('/');
-        let tabId = 'tab-' + parts[0].replace('#', '');
-        let postName = parts[1];
-        activateTab(tabId);
-        if (postName) {
-            let postLink = document.querySelector('.product-link[data-post-name="' + postName + '"]');
-            if (postLink) {
-                postLink.click();
+    function handleHashChange() {
+        let hash = window.location.hash;
+        if (hash) {
+            let parts = hash.split('/');
+            let tabId = 'tab-' + parts[0].replace('#', '');
+            let postName = parts[1];
+            activateTab(tabId);
+            if (postName) {
+                let postLink = document.querySelector('.product-link[data-post-name="' + postName + '"]');
+                if (postLink) {
+                    postLink.click();
+                }
+            }
+        } else {
+            let firstProductLink = document.querySelector('#tab-El_Pomar .product-link.active');
+            if (firstProductLink) {
+                firstProductLink.click();
             }
         }
-    } else {
-        let firstProductLink = document.querySelector('#tab-El_Pomar .product-link.active');
-        if (firstProductLink) {
-            firstProductLink.click();
-        }
     }
+
+    // Manejar cambios en el hash de la URL
+    window.addEventListener('hashchange', handleHashChange);
+
+    // Ejecutar al cargar la página
+    handleHashChange();
 });
